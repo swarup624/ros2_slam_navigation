@@ -95,6 +95,23 @@ ros2 launch my_robot_bringup navigation.launch.py
 
 ## 📷 Screenshots
 
+### Gazebo & RViz
+
+![Gazebo & RViz](media/gazebo_rviz.jpeg)
+
+---
+
+### Generated Map
+
+![Generated Map](media/map.jpeg)
+
+---
+
+## 🎥 Demo Video
+
+The navigation demo is available here:
+
+[▶️ Watch Waypoint Navigation Demo](media/waypoint_nav.mp4)
 ### Gazebo
 
 (Add screenshot here)
