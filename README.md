@@ -1,3 +1,10 @@
+![ROS2](https://img.shields.io/badge/ROS2-Jazzy-blue)
+![Gazebo](https://img.shields.io/badge/Gazebo-Harmonic-orange)
+![Nav2](https://img.shields.io/badge/Nav2-Autonomous-green)
+![SLAM](https://img.shields.io/badge/SLAM-Toolbox-red)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04-E95420)
+![Python](https://img.shields.io/badge/Python-3.12-yellow)
+
 # 🤖 ROS2 SLAM & Navigation
 
 A ROS 2 Jazzy project demonstrating autonomous mobile robot navigation using **SLAM Toolbox**, **Nav2**, **Gazebo Harmonic**, and **RViz2**.
