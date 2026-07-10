@@ -1,16 +1,27 @@
 # 🤖 ROS2 SLAM & Navigation
 
-A ROS 2 Jazzy project demonstrating autonomous mobile robot navigation using SLAM, Nav2, Gazebo Harmonic, and RViz2.
+A ROS 2 Jazzy project demonstrating autonomous mobile robot navigation using **SLAM Toolbox**, **Nav2**, **Gazebo Harmonic**, and **RViz2**.
+
+The project includes:
+- Differential Drive Mobile Robot
+- LiDAR Sensor Integration
+- Camera Sensor
+- SLAM Mapping
+- Autonomous Navigation
+- Waypoint Navigation
+- Gazebo Harmonic Simulation
+- RViz2 Visualization
 
 ---
 
-## 📌 Features
+# 📌 Features
 
 - ✅ ROS 2 Jazzy
 - ✅ Gazebo Harmonic Simulation
-- ✅ Robot State Publisher
-- ✅ URDF/Xacro Robot Model
-- ✅ LiDAR Integration
+- ✅ Differential Drive Mobile Robot
+- ✅ LiDAR Sensor Integration
+- ✅ Camera Sensor
+- ✅ URDF/Xacro Robot Description
 - ✅ SLAM Mapping
 - ✅ Map Saving
 - ✅ AMCL Localization
@@ -20,7 +31,7 @@ A ROS 2 Jazzy project demonstrating autonomous mobile robot navigation using SLA
 
 ---
 
-## 🛠 Technologies
+# 🛠 Technologies Used
 
 - ROS 2 Jazzy
 - Gazebo Harmonic
@@ -34,27 +45,70 @@ A ROS 2 Jazzy project demonstrating autonomous mobile robot navigation using SLA
 
 ---
 
-## 📂 Project Structure
+# 📋 Prerequisites
 
-```
-ros2_ws_lv3
+Before running this project, make sure the following are installed:
+
+- Ubuntu 24.04
+- ROS 2 Jazzy
+- Gazebo Harmonic
+- RViz2
+- Nav2
+- SLAM Toolbox
+- colcon
+
+---
+
+# 📂 Project Structure
+
+```text
+ros2_ws_lv3/
+
+├── src/
 │
-├── src
-│   ├── my_robot_description
-│   ├── my_robot_navigation
-│   ├── my_robot_bringup
-│   └── ...
+├── my_robot_bringup/
+│   ├── config/
+│   │   ├── gazebo_bridge.yaml
+│   │   └── nav2_params.yaml
+│   │
+│   ├── launch/
+│   │   └── my_robot_gazebo.launch.xml
+│   │
+│   ├── maps/
+│   │   ├── warehouse_map.yaml
+│   │   └── warehouse_map.pgm
+│   │
+│   └── worlds/
+│       ├── my_world.sdf
+│       └── warehouse.sdf
+│
+├── my_robot_description/
+│   ├── launch/
+│   ├── rviz/
+│   └── urdf/
+│
+├── my_robot_navigation/
+│   ├── config/
+│   ├── launch/
+│   ├── maps/
+│   ├── rviz/
+│   └── scripts/
+│
+├── media/
 │
 ├── README.md
+│
 └── .gitignore
 ```
 
 ---
 
-## 🚀 Build
+# 🚀 Build the Workspace
 
 ```bash
 cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
 
 colcon build --symlink-install
 
@@ -63,83 +117,206 @@ source install/setup.bash
 
 ---
 
-## ▶️ Launch Simulation
+# 🌍 Launch Gazebo Simulation
+
+Open a new terminal.
 
 ```bash
-ros2 launch my_robot_bringup bringup.launch.py
+cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
+
+source install/setup.bash
+
+ros2 launch my_robot_bringup my_robot_gazebo.launch.xml
 ```
+
+This launches:
+
+- Gazebo Harmonic
+- Mobile Robot
+- LiDAR
+- Camera
+- Robot State Publisher
+- ros_gz_bridge
 
 ---
 
-## 🗺️ Create Map
+# 🗺️ Start SLAM Mapping
+
+Open a new terminal.
 
 ```bash
+cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
+
+source install/setup.bash
+
 ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
 ```
 
-Save the map:
+---
+
+# 🖥️ Launch RViz for Mapping
+
+Open another terminal.
 
 ```bash
-ros2 run nav2_map_server map_saver_cli -f maps/my_map
+cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
+
+source install/setup.bash
+
+rviz2 -d src/my_robot_navigation/rviz/slam.rviz
 ```
 
 ---
 
-## 🚗 Navigation
+# 🎮 Teleoperate the Robot
+
+Open another terminal.
 
 ```bash
-ros2 launch my_robot_bringup navigation.launch.py
+cd ~/ros2_ws_lv3
+
+source install/setup.bash
+
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+Drive the robot around the environment until the map is complete.
+
+---
+
+# 💾 Save the Map
+
+```bash
+cd ~/ros2_ws_lv3/src/my_robot_navigation/maps
+
+ros2 run nav2_map_server map_saver_cli -f warehouse_map
+```
+
+Generated files:
+
+```text
+warehouse_map.yaml
+warehouse_map.pgm
 ```
 
 ---
 
-## 📷 Screenshots
+# 🚗 Launch Navigation
 
-### Gazebo & RViz
+Stop SLAM using **Ctrl + C**.
+
+Open a new terminal.
+
+```bash
+cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
+
+source install/setup.bash
+
+ros2 launch my_robot_navigation navigation.launch.py
+```
+
+---
+
+# 🖥️ Launch RViz for Navigation
+
+Open another terminal.
+
+```bash
+cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
+
+source install/setup.bash
+
+rviz2 -d src/my_robot_navigation/rviz/navigation.rviz
+```
+
+---
+
+# 📍 Set Initial Pose
+
+Inside RViz:
+
+1. Click **2D Pose Estimate**
+2. Click on the robot
+3. Drag the arrow in the robot's facing direction
+
+---
+
+# 🎯 Send a Navigation Goal
+
+Inside RViz:
+
+1. Click **Nav2 Goal**
+2. Select the destination on the map
+
+The robot will autonomously navigate to the selected goal.
+
+---
+
+# 📌 Waypoint Navigation
+
+Open a new terminal.
+
+```bash
+cd ~/ros2_ws_lv3
+
+source /opt/ros/jazzy/setup.bash
+
+source install/setup.bash
+
+ros2 run my_robot_navigation waypoint_navigation
+```
+
+> **Note:** Replace `waypoint_navigation` with the installed executable name if it is different in your package.
+
+---
+
+# 📷 Screenshots
+
+## Gazebo Simulation & RViz
 
 ![Gazebo & RViz](media/gazebo_rviz.jpeg)
 
 ---
 
-### Generated Map
+## Generated Warehouse Map
 
-![Generated Map](media/map.jpeg)
+![Warehouse Map](media/map.jpeg)
 
 ---
 
-## 🎥 Demo Video
-
-The navigation demo is available here:
+# 🎥 Demo Video
 
 [▶️ Watch Waypoint Navigation Demo](media/waypoint_nav.mp4)
-### Gazebo
-
-(Add screenshot here)
-
-### RViz
-
-(Add screenshot here)
-
-### Generated Map
-
-(Add screenshot here)
 
 ---
 
-## 📈 Future Improvements
+# 🚀 Future Improvements
 
-- Obstacle avoidance
-- Dynamic path planning
-- Multi-goal navigation
-- Camera-based navigation
-- Autonomous exploration
+- Dynamic Obstacle Avoidance
+- Autonomous Exploration
+- Multi-Robot Navigation
+- Camera-based Object Detection
+- Dynamic Path Planning
+- Path Optimization
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Swarup Jadhav**
 
-B.Tech Automation & Robotics
+B.Tech – Automation & Robotics
 
 GitHub: https://github.com/swarup624
+
+LinkedIn: *(Add your LinkedIn profile link here)*
